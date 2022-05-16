@@ -1,4 +1,5 @@
 {% extends 'admin/base.html' %}
+{% load i18n %}
 {% block content %}
 
 <main>
@@ -66,7 +67,7 @@
         <div class="table-responsive col-12">
             <div class="options">
                 <h2>Dashboards</h2>
-                <a class="add_dashboard" href="/">Add +</a>
+                <a href="/" class="btn btn-primary" data-toggle="modal" data-target="#dashboardModal">Add +</a>
             </div>
             <table class="table table-hover">
                 <thead class="thead-dark">
@@ -83,10 +84,10 @@
                             <tr>                                 
                             <th scope="row">{{dash.id}}</th>
                             <td>{{dash.name}}</td>
-                            <td>{{dash.url}}</td>                    
+                            <td><a href="{{dash.url}}">{{dash.url}}</a></td>                    
                             <th scope="row">
-                                {% if dash.is_active == 1 %}
-                                    Activated
+                                {% if dash.active == 1 %}
+                                    Active
                                 {% elif dash.banned == 1 %}                                
                                     Banned
                                 {% else %}                                
@@ -94,15 +95,44 @@
                                 {% endif %}
                             </th>      
                             <td class="d-flex justify-content-end">
-                                {% if dash.is_active == 1 %}
+                                {% if dash.active == 1 %}
                                     <a title="Ban" href="" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>    
                                 {% elif dash.banned == 1 %}                                
-                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-lang="{{dash.language}}" data-system="{{dash.system_id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>                                
+                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>                                
                                 {% else %}
-                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-lang="{{dash.language}}" data-system="{{dash.system_id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
                                     <a title="Ban" href="" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>
                                 {% endif %}
                                 <a title="Delete" href="" class="btn btn-danger mx-1" data-id="{{dash.id}}" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content container">
+                                            <div class="modal-header mt-3 border-0">
+                                                <h5 class="modal-title" id="textModalTitle">{% trans "Delete Dashboard?" %}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{% url 'dashboard_delete' dashboard_id=dash.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                                                    <!-- SUBMIT BUTTON -->
+                                                    <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                                                        <span class="btn btn-primary">{% trans "Delete" %}</span>
+                                                        <div class="loading-container">
+                                                            <div class="loading">
+                                                                <div class="loader">
+                                                                    <span></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td> 
                         </tr>
                     {% endfor %}
@@ -110,7 +140,10 @@
             </table>
         </div>
     </section>
+
+    <section>
+        {% include 'admin/dashboard_create.html' %}
+    </section>
 </main>
-    
 
 {% endblock content %}
