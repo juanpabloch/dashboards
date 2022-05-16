@@ -41,8 +41,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_login = models.DateTimeField(default=datetime.now)
     created = models.DateTimeField(default=datetime.now)
     modified = models.DateTimeField(default=datetime.now)
-    admin = models.IntegerField(blank=True, null=True, default=0)
     avatar = models.CharField(max_length=255, blank=True, null=True)
+    language = models.CharField(max_length=10)
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = 'email'
@@ -53,3 +53,29 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = "users"
     
+    
+class Dashboard(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    url = models.CharField(max_length=100, blank=True, null=True)
+    iframe = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(default=datetime.now)
+    updated_at = models.DateTimeField(default=datetime.now)
+    active = models.IntegerField(default=1)
+    users = models.ManyToManyField(User, related_name='dashboards')
+    class Meta:
+        managed = False
+        db_table = "dashboards"
+        
+
+class Languages(models.Model):
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True, default=datetime.now)
+
+    class Meta:
+        managed = False
+        db_table = "languages"
+        verbose_name_plural = "Languages"
+
+    def __str__(self):
+        return self.name

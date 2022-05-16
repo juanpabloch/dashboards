@@ -1,0 +1,116 @@
+{% extends 'admin/base.html' %}
+{% block content %}
+
+<main>
+    <h1>admin Panel</h1>
+    <a href="{% url 'logout' %}">Logout</a>
+        
+    <section id="users">
+        <div class="table-responsive col-12">
+            <h2>Usuarios</h2>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr class="table-active">
+                        <th scope="col">#</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Admin</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usr in users %}
+                            <tr>                                 
+                            <th scope="row">{{usr.id}}</th>
+                            <td>{{usr.first_name}}</td>
+                            <td>{{usr.last_name}}</td>
+                            <td>{{usr.email}}</td>                    
+                            <td>{{usr.language}}</td>
+                            <th scope="row">
+                                {% if usr.is_active == 1 %}
+                                    Activated
+                                {% elif usr.banned == 1 %}                                
+                                    Banned
+                                {% else %}                                
+                                    Pending
+                                {% endif %}
+                            </th>      
+                            <th scope="row">{% if usr.is_staff == 1 %}
+                                    Yes
+                                {% else %}   
+                                    No
+                                {% endif %}   
+                            </th>
+                            <td class="d-flex justify-content-end">
+                                {% if usr.is_active == 1 %}
+                                    <a title="Ban" href="" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>    
+                                {% elif usr.banned == 1 %}                                
+                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{usr.id}}" data-lang="{{usr.language}}" data-system="{{usr.system_id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>                                
+                                {% else %}
+                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{usr.id}}" data-lang="{{usr.language}}" data-system="{{usr.system_id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                                    <a title="Ban" href="" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                                {% endif %}
+                                <a title="Delete" href="" class="btn btn-danger mx-1" data-id="{{usr.id}}" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </td> 
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>  
+
+    <section id="dashboards">
+        <div class="table-responsive col-12">
+            <div class="options">
+                <h2>Dashboards</h2>
+                <a class="add_dashboard" href="/">Add +</a>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr class="table-active">
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dash in dashboards %}
+                            <tr>                                 
+                            <th scope="row">{{dash.id}}</th>
+                            <td>{{dash.name}}</td>
+                            <td>{{dash.url}}</td>                    
+                            <th scope="row">
+                                {% if dash.is_active == 1 %}
+                                    Activated
+                                {% elif dash.banned == 1 %}                                
+                                    Banned
+                                {% else %}                                
+                                    Pending
+                                {% endif %}
+                            </th>      
+                            <td class="d-flex justify-content-end">
+                                {% if dash.is_active == 1 %}
+                                    <a title="Ban" href="" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>    
+                                {% elif dash.banned == 1 %}                                
+                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-lang="{{dash.language}}" data-system="{{dash.system_id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>                                
+                                {% else %}
+                                    <a title="Activate" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-lang="{{dash.language}}" data-system="{{dash.system_id}}" data-toggle="modal" data-target="#activateUserModal"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                                    <a title="Ban" href="" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                                {% endif %}
+                                <a title="Delete" href="" class="btn btn-danger mx-1" data-id="{{dash.id}}" data-toggle="modal" data-target="#deleteUserModal"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </td> 
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+    
+
+{% endblock content %}
