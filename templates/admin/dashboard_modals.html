@@ -1,0 +1,32 @@
+{% load i18n %}
+{% comment %} TODO: armar modal en js {% endcomment %}
+{% comment %} delete modal {% endcomment %}
+<div class="modal fade" id="deleteDashboardModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content container">
+            <div class="modal-header mt-3 border-0">
+                <h5 class="modal-title" id="textModalTitle">{% trans "Delete Dashboard?" %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="deleteDashboardModalForm" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                        <span class="btn btn-danger">{% trans "Delete" %}</span>
+                        <div class="loading-container">
+                            <div class="loading">
+                                <div class="loader">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

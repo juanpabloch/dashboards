@@ -43,6 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     modified = models.DateTimeField(default=datetime.now)
     avatar = models.CharField(max_length=255, blank=True, null=True)
     language = models.CharField(max_length=10)
+    delete = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = 'email'

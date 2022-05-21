@@ -1,0 +1,48 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+
+<main>
+    <h1>Edit Dashboard</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="modal-body d-flex flex-column">
+            {% comment %} <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Name:</label>
+                <input type="text" name="name" id="textModalInput" class="w-100" style="padding:5px" aria-describedby="textModalInput_help" placeholder="Dashboard name" 
+                    value="{% if dashboard.name %}{{dashboard.name}}{% endif %}">
+                <!-- <small class="form-text error p-0" style="bottom: -10px;" id="textModalInput_help">Por favor ingrese texto a mostrar.</small>	 -->
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">URL:</label>
+                <input type="text" name="url" id="textModalInput" class="w-100" style="padding:5px" aria-describedby="textModalInput_help" placeholder="Dashboard url"
+                value="{% if dashboard.url %}{{dashboard.url}}{% endif %}">
+                <!-- <small class="form-text error p-0" style="bottom: -10px;" id="textModalInput_help">Por favor ingrese texto a mostrar.</small>	 -->
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">iframe:</label>
+                <input type="text" name="iframe" id="textModalInput" class="w-100" style="padding:5px" aria-describedby="textModalInput_help" placeholder="Dashboard iframe"
+                value="{% if dashboard.iframe %}{{dashboard.iframe}}{% endif %}">
+                <!-- <small class="form-text error p-0" style="bottom: -10px;" id="textModalInput_help">Por favor ingrese texto a mostrar.</small>	 -->
+            </div> {% endcomment %}
+            {{form.as_p}}
+        </div>
+        <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
+            <!-- SUBMIT BUTTON -->
+            <a class="btn btn-secondary" href="{% url 'admin_dashboard_view' %}">Close</a>
+            <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                <span class="btn btn-primary">{% trans "Update Dashboard" %}</span>
+                <div class="loading-container">
+                    <div class="loading">
+                        <div class="loader">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </form>
+</main>
+
+{% endblock content %}

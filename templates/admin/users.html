@@ -1,0 +1,73 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+<section>
+    <div class="table-responsive col-12">
+        <h2>Usuarios</h2>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr class="table-active">
+                    <th scope="col">#</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Dashboards</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usr in users %}
+                    <tr>                                 
+                        <th scope="row">{{usr.id}}</th>
+                        <td>{{usr.first_name}}</td>
+                        <td>{{usr.last_name}}</td>
+                        <td>{{usr.email}}</td>
+                        <td>
+                            {% for dash in usr.dashboards.all %}
+                                {{dash.name}}, 
+                            {% endfor %}
+                        </td>                    
+                        <td>{{usr.language}}</td>
+                        {% if usr.delete %}
+                            <td>DELETE</td>
+                        {% else %}
+                            <th scope="row">
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false">
+                                        {% if not usr.is_active and not usr.banned %}Pending{% elif usr.banned %}Bann{% else %}Active{% endif %}
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a title="Active" href="" class="dropdown-item {% if usr.is_active %}disabled{% endif %}" data-toggle="modal" data-target="#activeUserModal" data-id="{{usr.id}}">Active</a></li>
+                                        <li><a title="Ban" href="" class="dropdown-item {% if usr.banned %}disabled{% endif %}" data-toggle="modal" data-target="#banUserModal" data-id="{{usr.id}}">Bann</a></li>
+                                    </ul>
+                                </div>
+                            </th>  
+                        {% endif %}
+                                  
+                        <th scope="row">{% if usr.is_staff == 1 %}
+                                Yes
+                            {% else %}   
+                                No
+                            {% endif %}   
+                        </th>
+                        <td class="d-flex justify-content-end">
+                            {% if usr.delete == 0 %}
+                                <a title="Update" data-toggle="modal" href="" class="btn btn-success mx-1" data-id="{{usr.id}}" data-target="#editUserModal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a title="Delete" data-toggle="modal" href="" class="btn btn-danger mx-1" data-id="{{usr.id}}" data-target="#deleteUserModal"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            {% endif %}
+                            
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    {% include 'admin/users_modals.html' %}
+    
+{% endblock content %}

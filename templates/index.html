@@ -1,8 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<main>
     <h1>Index</h1>
-</main>
+    <a href="{% url 'logout' %}">LogOut</a>
 
+    {% if dashboards|length > 1 %}
+        <ul>
+        {% for dash in dashboards %}
+            <li>{{dash.name}}</li>
+        {% endfor %}
+        </ul>
+
+    {% elif dashboards|length == 1 %}
+    
+        {% for dash in dashboards %}
+            <div class="container">
+                <iframe class="responsive-iframe" width="600" height="800" src="{{dash.iframe}}" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div> 
+        {% endfor %}
+    
+    {% else %}
+            <p>no dashboards to see</p>
+    {% endif %}
 {% endblock content %}

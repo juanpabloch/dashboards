@@ -1,0 +1,161 @@
+{% load i18n %}
+
+{% comment %} USERS {% endcomment %}
+{% comment %} BAN USER MODAL {% endcomment %}
+<div class="modal fade" id="banUserModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content container">
+            <div class="modal-header mt-3 border-0">
+                <h5 class="modal-title" id="textModalTitle">{% trans "Ban User" %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="banUserModalForm" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-body d-flex flex-column">
+                    <div class="form-group">
+                        {% comment %} <label for="id_ban_reason" class="col-form-label">Ban Reason</label>
+                        <input type="text" name="ban_reason" id="textModalInput" class="w-100" style="padding:5px" aria-describedby="textModalInput_help" placeholder="Ban reason">
+                        <!-- <small class="form-text error p-0" style="bottom: -10px;" id="textModalInput_help">Por favor ingrese texto a mostrar.</small>	 --> {% endcomment %}
+                        {% comment %} <label for="id_ban_reason" class="col-form-label">Ban Reason</label> {% endcomment %}
+                        {{ban_form.as_p}}
+                    </div>
+                </div>
+                <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
+                    <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                        <span class="btn btn-primary">{% trans "Ban User" %}</span>
+                        <div class="loading-container">
+                            <div class="loading">
+                                <div class="loader">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% comment %} ACTIVE USER MODAL {% endcomment %}
+<div class="modal fade" id="activeUserModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content container">
+            <div class="modal-header mt-3 border-0">
+                <h5 class="modal-title" id="textModalTitle">{% trans "Active User" %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="activeUserModalForm" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-body d-flex flex-column">
+                    <div class="form-group">
+                        {% comment %} <label for="dashboard_select" class="col-form-label">Active User</label>
+                        <select id="dashboard_select" name="dashboard_select" class="form-select" aria-label="Dashboard Select" multiple>
+                            
+                            {% for dash in dashboards %}
+                                <option value="{{dash.id}}">{{dash.name}}</option>
+                            {% endfor %}
+                                
+                        </select> {% endcomment %}
+                        {{dashboard_select_form}}
+                    </div>
+                </div>
+                <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
+                    <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                        <span class="btn btn-primary">{% trans "Active User" %}</span>
+                        <div class="loading-container">
+                            <div class="loading">
+                                <div class="loader">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% comment %} EDIT USER MODAL {% endcomment %}
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content container">
+            <div class="modal-header mt-3 border-0">
+                <h5 class="modal-title" id="textModalTitle">{% trans "Edit User" %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editUserModalForm" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-body d-flex flex-column">
+                    <div class="form-group">
+                        {% comment %} <label for="dashboard_select" class="col-form-label">Select Dashboards</label>
+                        <select id="dashboard_select" name="dashboard_select" class="form-select" aria-label="Dashboard Select" multiple>
+                            
+                            {% for dash in dashboards %}
+                                <option value="{{dash.id}}">{{dash.name}}</option>
+                            {% endfor %}
+                                
+                        </select> {% endcomment %}
+                        {{dashboard_select_form}}
+                    </div>
+                </div>
+                <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
+                    <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                        <span class="btn btn-primary">{% trans "Update User" %}</span>
+                        <div class="loading-container">
+                            <div class="loading">
+                                <div class="loader">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% comment %} DELETE MODAL {% endcomment %}
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content container">
+            <div class="modal-header mt-3 border-0">
+                <h5 class="modal-title" id="textModalTitle">{% trans "Delete User?" %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="deleteUserModalForm" action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                        <span class="btn btn-danger">{% trans "Delete" %}</span>
+                        <div class="loading-container">
+                            <div class="loading">
+                                <div class="loader">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
