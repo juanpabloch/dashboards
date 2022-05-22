@@ -168,6 +168,10 @@ LOGOUT_REDIRECT_URL = "/"
 # django select2
 CACHES = {
     # … default cache config and others
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    },
     "select2": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/2",
