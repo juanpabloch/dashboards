@@ -9,7 +9,7 @@ from allauth.exceptions import ImmediateHttpResponse
 from django.dispatch import receiver
 
 # formularios
-from .forms import BannForm, DashboardForm, DashboardSelectForm, DashBoarsFormSelect
+from .forms import BannForm, DashboardForm, DashboardSelectForm
 
 
 
@@ -222,9 +222,9 @@ def banned_view(request):
     return render(request, 'account/banned.html')
     
     
-def prueba(request):
-    form = DashBoarsFormSelect
-    context = {
-        "form": form
-    }
-    return render(request, 'pruebas.html', context)
+# def prueba(request):
+#     form = DashBoarsFormSelect
+#     context = {
+#         "form": form
+#     }
+#     return render(request, 'pruebas.html', context)

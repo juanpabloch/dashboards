@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -80,3 +81,4 @@ class Languages(models.Model):
 
     def __str__(self):
         return self.name
+    
