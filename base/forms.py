@@ -1,7 +1,7 @@
-from dataclasses import fields
-from pyexpat import model
 from django import forms
+from jmespath import search
 from .models import Dashboard
+from django_select2 import forms as s2forms
 
 class BannForm(forms.Form):
     ban_reason = forms.CharField(max_length=100)
@@ -18,3 +18,8 @@ class DashboardSelectForm(forms.Form):
     dashboards = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=dashboards_list)
     
    
+class DashBoarsFormSelect(s2forms.ModelSelect2MultipleWidget):
+    search_fields = [
+        "name_icontains"
+    ]
+    

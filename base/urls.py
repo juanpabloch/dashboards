@@ -38,4 +38,5 @@ urlpatterns = [
     path("admin/user/delete/<int:user_id>/", user_delete, name="user_delete"),
     path("admin/user/banned/<int:user_id>/", user_banned, name="user_banned"),
     
+    path("select2/", include("django_select2.urls")),
 ]
