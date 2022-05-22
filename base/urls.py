@@ -13,7 +13,8 @@ from .views import (
     user_banned,
     user_edit,
     user_delete,
-    banned_view
+    banned_view,
+    prueba
 )
 from django.contrib.auth.views import LogoutView, LoginView
 
@@ -39,4 +40,5 @@ urlpatterns = [
     path("admin/user/banned/<int:user_id>/", user_banned, name="user_banned"),
     
     path("select2/", include("django_select2.urls")),
+    path('pruebas/', prueba, name='prueba')
 ]

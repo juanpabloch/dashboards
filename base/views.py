@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .selectors import thank_auth
@@ -8,7 +9,7 @@ from allauth.exceptions import ImmediateHttpResponse
 from django.dispatch import receiver
 
 # formularios
-from .forms import BannForm, DashboardForm, DashboardSelectForm
+from .forms import BannForm, DashboardForm, DashboardSelectForm, DashBoarsFormSelect
 
 
 
@@ -220,3 +221,10 @@ def banned_view(request):
         return redirect('index')
     return render(request, 'account/banned.html')
     
+    
+def prueba(request):
+    form = DashBoarsFormSelect
+    context = {
+        "form": form
+    }
+    return render(request, 'pruebas.html', context)
