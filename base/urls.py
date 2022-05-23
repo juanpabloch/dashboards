@@ -14,7 +14,7 @@ from .views import (
     user_edit,
     user_delete,
     banned_view,
-    # prueba
+    pruebas
 )
 from django.contrib.auth.views import LogoutView, LoginView
 

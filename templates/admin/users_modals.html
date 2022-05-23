@@ -55,15 +55,13 @@
                 {% csrf_token %}
                 <div class="modal-body d-flex flex-column">
                     <div class="form-group">
-                        {% comment %} <label for="dashboard_select" class="col-form-label">Active User</label>
-                        <select id="dashboard_select" name="dashboard_select" class="form-select" aria-label="Dashboard Select" multiple>
-                            
-                            {% for dash in dashboards %}
-                                <option value="{{dash.id}}">{{dash.name}}</option>
-                            {% endfor %}
-                                
-                        </select> {% endcomment %}
-                        {{dashboard_select_form}}
+                        <div class="input-group  col-12 col-md-8  my-3">
+                            <select class="custom-select form-control " title="dashboards_active" id="dashboards_active" name="dashboards_active[]" multiple="multiple">
+                                {% for dash in dashboards %}
+                                    <option value='{{dash.id}}'>{{dash.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
@@ -97,18 +95,12 @@
             </div>
             <form id="editUserModalForm" action="" method="POST">
                 {% csrf_token %}
-                <div class="modal-body d-flex flex-column">
-                    <div class="form-group">
-                        {% comment %} <label for="dashboard_select" class="col-form-label">Select Dashboards</label>
-                        <select id="dashboard_select" name="dashboard_select" class="form-select" aria-label="Dashboard Select" multiple>
-                            
-                            {% for dash in dashboards %}
-                                <option value="{{dash.id}}">{{dash.name}}</option>
-                            {% endfor %}
-                                
-                        </select> {% endcomment %}
-                        {{dashboard_select_form}}
-                    </div>
+                <div class="input-group">
+                    <select class="custom-select form-control " title="dashboards" id="dashboards" name="dashboards[]" multiple="multiple">
+                        {% for dash in dashboards %}
+                            <option value='{{dash.id}}'>{{dash.name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
                     <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>

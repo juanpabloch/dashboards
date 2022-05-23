@@ -9,7 +9,7 @@ from allauth.exceptions import ImmediateHttpResponse
 from django.dispatch import receiver
 
 # formularios
-from .forms import BannForm, DashboardForm, DashboardSelectForm
+from .forms import BannForm, DashboardForm
 
 
 
@@ -149,12 +149,10 @@ def admin_user_view(request):
     
     users = User.objects.all()
     dashboards = Dashboard.objects.all().values("id", "name")
-    form = DashboardSelectForm()
     context = {
         "users": users,
         "dashboards": dashboards,
         "ban_form": BannForm(),
-        "dashboard_select_form": form
     }
     return render(request, 'admin/users.html', context)
     
@@ -170,7 +168,7 @@ def user_activate(request, user_id):
         user.banned = 0
         user.save()
         if user:
-            dash_list = request.POST.getlist('dashboard_select')
+            dash_list = request.POST.getlist('dashboards[]')
             dashboards = Dashboard.objects.filter(id__in=dash_list)
             for dash in dashboards:
                 dash.users.add(user.id)
@@ -208,7 +206,7 @@ def user_edit(request, user_id):
     user = User.objects.filter(id=user_id)[0]
     user.dashboards.clear()
     if request.method == "POST":
-        dash_list = request.POST.getlist('dashboards')
+        dash_list = request.POST.getlist('dashboards[]')
         dashboards = Dashboard.objects.filter(id__in=dash_list)
         for dash in dashboards:
             dash.users.add(user.id)
