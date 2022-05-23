@@ -220,11 +220,3 @@ def banned_view(request):
     if request.user.is_authenticated:
         return redirect('index')
     return render(request, 'account/banned.html')
-    
-    
-# def prueba(request):
-#     form = DashBoarsFormSelect
-#     context = {
-#         "form": form
-#     }
-#     return render(request, 'pruebas.html', context)

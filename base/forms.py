@@ -15,7 +15,3 @@ class DashboardForm(forms.ModelForm):
 class DashboardSelectForm(forms.Form):
     dashboards_list = Dashboard.objects.all().values_list("id", "name")
     dashboards = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=dashboards_list)
-    
-   
- 
-    
