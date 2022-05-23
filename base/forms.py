@@ -1,3 +1,4 @@
+from dataclasses import fields
 from django import forms
 from .models import Dashboard
 
@@ -12,10 +13,7 @@ class DashboardForm(forms.ModelForm):
         fields = ['name', 'url', 'iframe']
         
 
-class DashboardSelectForm(forms.Form):
-    dashboards_list = Dashboard.objects.all().values_list("id", "name")
-    dashboards = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=dashboards_list)
-    
-   
- 
+# class DashboardSelectForm(forms.Form):
+#     dashboards_list = Dashboard.objects.all().values_list("id", "name")
+#     dashboards = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=dashboards_list)
     

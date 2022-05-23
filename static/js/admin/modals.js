@@ -40,3 +40,12 @@ $('#deleteDashboardModal').on('show.bs.modal', (e)=>{
     const id = button.data("id")
     $('#deleteDashboardModalForm').attr('action', `${url}delete/${id}/`)
 })
+
+$(document).ready(function() {
+    $('#dashboards').select2({
+        placeholder: "Select a dashboard"
+    });
+    $('#dashboards_active').select2({
+        placeholder: "Select a dashboard"
+    });
+});

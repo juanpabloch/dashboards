@@ -28,6 +28,20 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **kwargs):
         user = self._create_user(email, password, True, True, True, **kwargs)
         
+        
+class Languages(models.Model):
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True, default=datetime.now)
+
+    class Meta:
+        managed = False
+        db_table = "languages"
+        verbose_name_plural = "Languages"
+
+    def __str__(self):
+        return self.name        
+        
 
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255)
@@ -68,17 +82,3 @@ class Dashboard(models.Model):
         managed = False
         db_table = "dashboards"
         
-
-class Languages(models.Model):
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True, default=datetime.now)
-
-    class Meta:
-        managed = False
-        db_table = "languages"
-        verbose_name_plural = "Languages"
-
-    def __str__(self):
-        return self.name
-    
