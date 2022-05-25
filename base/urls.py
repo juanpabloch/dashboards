@@ -13,8 +13,14 @@ from .views import (
     user_banned,
     user_edit,
     user_delete,
+    admin_domain_view,
+    domain_create,
+    domain_delete,
+    domain_edit,
     banned_view,
-    pruebas
+    dashboard_view,
+    forbidden_view,
+    get_domains
 )
 from django.contrib.auth.views import LogoutView, LoginView
 
@@ -25,6 +31,7 @@ urlpatterns = [
     path('accounts/login/', LoginView.as_view(template_name="account/login.html"), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/banned/', banned_view, name='banned'),
+    path('accounts/forbidden/', forbidden_view, name='forbidden'),
     
     path('admin/dashboards/', admin_dashboard_view, name='admin_dashboard_view'),
     path('admin/dashboards/create/', dashboard_create, name='dashboard_create'),
@@ -38,4 +45,13 @@ urlpatterns = [
     path("admin/user/edit/<int:user_id>/", user_edit, name="user_edit"),
     path("admin/user/delete/<int:user_id>/", user_delete, name="user_delete"),
     path("admin/user/banned/<int:user_id>/", user_banned, name="user_banned"),
+    
+    path('admin/domain/', admin_domain_view, name='admin_domain_view'),
+    path('admin/domain/create/', domain_create, name='domain_create'),
+    path('admin/domain/edit/<int:domain_id>/', domain_edit, name='domain_edit'),
+    path("admin/domain/delete/<int:domain_id>/", domain_delete, name="domain_delete"),
+    
+    path('dashboard/', dashboard_view, name="dashboard_view"),
+    
+    path('admin/domain/get_domains/<int:domain_id>/', get_domains)
 ]

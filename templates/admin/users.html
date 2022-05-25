@@ -56,7 +56,9 @@
                         </th>
                         <td class="d-flex justify-content-end">
                             {% if usr.delete == 0 %}
-                                <a title="Update" data-toggle="modal" href="" class="btn btn-success mx-1" data-id="{{usr.id}}" data-target="#editUserModal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                {% if usr.is_active %}
+                                    <a title="Update" data-toggle="modal" href="" class="btn btn-success mx-1" data-id="{{usr.id}}" data-target="#editUserModal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                {% endif %}
                                 <a title="Delete" data-toggle="modal" href="" class="btn btn-danger mx-1" data-id="{{usr.id}}" data-target="#deleteUserModal"><i class="fa fa-trash" aria-hidden="true"></i></a>
                             {% endif %}
                             

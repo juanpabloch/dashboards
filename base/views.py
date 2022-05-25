@@ -1,27 +1,32 @@
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .selectors import thank_auth
-from .models import User, Dashboard
+from .selectors import thank_auth, iframe_converter
+from .models import User, Dashboard, EmailsDomains
 
 from allauth.socialaccount.signals import pre_social_login
 from allauth.exceptions import ImmediateHttpResponse
 from django.dispatch import receiver
 
+from django.http import JsonResponse
+
 # formularios
-from .forms import BannForm, DashboardForm
+from .forms import BannForm, DashboardForm, DomainsForm
 
-
-
+# TODO: traer lista de dominios desde la base de datos
 # Create your views here.
 @receiver(pre_social_login)
 def check_user(request, sociallogin, **kwargs):
+    DOMAIN_LIST = EmailsDomains.objects.all().values_list('domain', flat=True)
     socialemail = sociallogin.user.email
-    user = User.objects.filter(email=socialemail)
+    domain = socialemail.split('@')[1]
+    
+    if not domain in DOMAIN_LIST:
+        raise ImmediateHttpResponse(redirect('forbidden'))
+    
+    user = User.objects.filter(email=socialemail).first()
     if user:
-        if user[0].banned:
-            raise ImmediateHttpResponse(redirect('banned'))
-        if user[0].delete:
+        if user.banned or user.delete:
             raise ImmediateHttpResponse(redirect('banned'))
 
 
@@ -30,9 +35,14 @@ def index_view(request):
     admin = thank_auth.is_staff(request)
     if admin:
         return redirect('admin_dashboard_view')
+    
     user = User.objects.filter(id=request.user.id)[0]
     user_dash = Dashboard.objects.filter(users__id=user.id).filter(active=1)
-    print("USER: ", user_dash)
+    if len(user_dash) == 1:
+        context = {
+            "iframe":user_dash[0].iframe
+        }
+        return render(request, 'dashboard.html', context)
     context = {
         'user': user,
         'dashboards': user_dash
@@ -69,10 +79,11 @@ def dashboard_create(request):
         form = DashboardForm(request.POST)
         if form.is_valid():
             dash = request.POST
+            iframe = iframe_converter.converter(dash["url"])
             dashboard = Dashboard.objects.create(
                 name = dash["name"],
                 url = dash["url"],
-                iframe = dash["iframe"]
+                iframe = iframe
             )
             if dashboard:
                 return redirect('admin_dashboard_view')
@@ -120,10 +131,11 @@ def dashboard_edit(request, dashboard_id):
         form = DashboardForm(request.POST)
         if form.is_valid():
             dash = request.POST
+            iframe = iframe_converter.converter(dash["url"])
             dashboard.update(
                 name = dash["name"],
                 url = dash["url"],
-                iframe = dash["iframe"]
+                iframe = iframe
             )
             if dashboard:
                 return redirect('admin_dashboard_view')
@@ -213,8 +225,84 @@ def user_edit(request, user_id):
                 
     return redirect('admin_user_view')
     
+
+# Domain
+def admin_domain_view(request):
+    domains = EmailsDomains.objects.all()
+    context = {
+        "domains": domains,
+        "new_domain_form": DomainsForm()
+    }
+    return render(request, 'admin/domains.html',context) 
+    
+
+def domain_create(request):
+    admin = thank_auth.is_staff(request)
+    if not admin:
+        return redirect('login')
+    
+    if request.method == "POST":
+        form = DomainsForm(request.POST)
+        if form.is_valid():
+            dom = request.POST
+            
+            domain = EmailsDomains.objects.create(
+                name = dom["name"],
+                domain = dom["domain"]
+            )
+            if domain:
+                return redirect('admin_domain_view') 
+ 
+
+def domain_delete(request, domain_id):
+    admin = thank_auth.is_staff(request)
+    if not admin:
+        return redirect('login')
+    
+    domain = EmailsDomains.objects.filter(id=domain_id).first()
+    if domain:
+        domain.delete()
+        return redirect('admin_domain_view')
+        
+    return redirect('admin_domain_view')   
+    
+    
+def domain_edit(request, domain_id):
+    if request.method == "POST": 
+        form = DomainsForm(request.POST)
+        if form.is_valid():
+            domain = EmailsDomains.objects.filter(id=domain_id).update(name=request.POST["name"], domain=request.POST["domain"])
+            if domain:
+                print("OK")
+    return redirect('admin_domain_view')
+    
+    
+def dashboard_view(request):
+    iframe = request.GET.get('iframe')
+    if iframe or iframe != '':
+        dash = f'https://{iframe}'
+        print("dash_iframe: ", dash)
+        return render(request, 'dashboard.html', {"iframe":dash})
+    else:
+        return redirect('index')
+    
     
 def banned_view(request):
     if request.user.is_authenticated:
         return redirect('index')
     return render(request, 'account/banned.html')
+
+
+def forbidden_view(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    return render(request, 'account/forbidden.html')
+
+
+def get_domains(request, domain_id):
+    domain = EmailsDomains.objects.filter(id=domain_id).first()
+    data = {
+        "name": domain.name,
+        "domain": domain.domain
+    }
+    return JsonResponse(data)

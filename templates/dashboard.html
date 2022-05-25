@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <main>
+        <h1>Index</h1>
+        <a href="{% url 'logout' %}">LogOut</a>
+        <a href="{% url 'index' %}">Volver</a>
+    </main>
+
+    <div class="container">
+        <iframe class="responsive-iframe" width="600" height="800" src="{{iframe}}" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+
+{% endblock content %}

@@ -73,7 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Dashboard(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=255)
-    iframe = models.CharField(max_length=255, blank=True, null=True)
+    iframe = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=datetime.now)
     updated_at = models.DateTimeField(default=datetime.now)
     active = models.IntegerField(default=1)
@@ -82,3 +82,12 @@ class Dashboard(models.Model):
         managed = False
         db_table = "dashboards"
         
+        
+class EmailsDomains(models.Model):
+    name = models.CharField(max_length=100)
+    domain = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=datetime.now)
+    updated_at = models.DateTimeField(default=datetime.now)
+    class Meta:
+        managed = False
+        db_table = "domains"
