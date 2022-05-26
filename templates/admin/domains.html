@@ -1,10 +1,13 @@
 {% extends 'admin/base.html' %}
 {% load i18n %}
 {% load static %}
+{% load custom_tags %}
 {% block content %}
 <main>
 
-    <section id="dashboards_section">
+    <script>const domainsData = {{domains|toJson|safe}}</script>
+    
+    <section id="domain_section">
         <div class="table-responsive col-12">
             <div class="options">
                 <h2>Domains</h2>

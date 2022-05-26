@@ -44,16 +44,9 @@
             </div>
             <form id="editDomainModalForm" action="" method="POST">
                 {% csrf_token %}
-                
-                <div id="formFields">
+                <div id="DomainFormFields">
 
                 </div>
-                {% comment %}
-                    <label for="id_name">Name:</label>
-                    <input type="text" name="name" maxlength="100" id="id_name">
-                    <label for="id_domain">Domain:</label>
-                    <input type="text" name="domain" maxlength="255" id="id_domain">
-                {% endcomment %}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
                     <!-- SUBMIT BUTTON -->

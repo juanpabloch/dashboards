@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+<main>
+
+    <script> const dashboardsData = {{dashboards|toJson|safe}} </script>
+
+    <section id="dashboards_section">
+        <div class="table-responsive col-12">
+            <div class="options">
+                <h2>Dashboards</h2>
+                <a href="/" class="btn btn-primary" data-toggle="modal" data-target="#dashboardModal">Add +</a>
+            </div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr class="table-active">
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">URL</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dash in dashboards %}
+                            <tr>                                 
+                            <th scope="row">{{dash.id}}</th>
+                            <td>{{dash.name}}</td>
+                            <td><a target="_blank" href="{{dash.url}}">{{dash.url}}</a></td>                    
+                            <th scope="row">
+                                {% if dash.active == 1 %}
+                                    Active
+                                {% else %}                                
+                                    Not Active
+                                {% endif %}
+                            </th>      
+                            <td class="d-flex justify-content-end">
+                                {% if dash.active == 1 %}
+                                    <a title="Ban" href="{% url 'dashboard_deactivate' dashboard_id=dash.id %}" class="btn btn-warning mx-1"><i class="fa fa-ban" aria-hidden="true"></i></a>    
+                                {% else %}
+                                    <a title="Activate" href="{% url 'dashboard_activate' dashboard_id=dash.id %}" class="btn btn-success mx-1" data-id="{{dash.id}}"><i class="fa fa-check-square-o" aria-hidden="true"></i></a>
+                                {% endif %}
+                                <a title="Update" href="" class="btn btn-success mx-1" data-id="{{dash.id}}" data-toggle="modal" data-target="#editDashboardModal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a title="Delete" href="" class="btn btn-danger mx-1" data-id="{{dash.id}}" data-toggle="modal" data-target="#deleteDashboardModal"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                {% include 'admin/dashboard_modals.html' with dashboard=dash %}
+                            </td> 
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <div class="modal fade" id="dashboardModal" tabindex="-1" role="dialog" aria-labelledby="textModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content container">
+                    <div class="modal-header mt-3 border-0">
+                        <h5 class="modal-title" id="textModalTitle">{% trans "Add Dashboard" %}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'dashboard_create' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body d-flex flex-column">
+                            {{new_dash_form.as_p}}
+                        </div>
+                        <div class="modal-footer pt-5 pt-md-3 border-0 d-flex flex-column flex-sm-row justify-content-center justify-content-sm-between">
+                            <button type="button" class="btn btn-principal btn-secondary mb-3" style="background-color: #5c5c5c;" data-dismiss="modal">{% trans "Close" %}</button>
+                            <!-- SUBMIT BUTTON -->
+                            <button type="submit" id="submit-modal-text" class="btn btn-principal mb-3">
+                                <span class="btn btn-primary">{% trans "Save Dashboard" %}</span>
+                                <div class="loading-container">
+                                    <div class="loading">
+                                        <div class="loader">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock content %}

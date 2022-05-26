@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import (
     index_view,  
-    admin_redirect,
+    admin_index,
     admin_user_view,
     admin_dashboard_view,
     dashboard_edit,
@@ -20,13 +20,13 @@ from .views import (
     banned_view,
     dashboard_view,
     forbidden_view,
-    get_domains
+    # get_domains
 )
 from django.contrib.auth.views import LogoutView, LoginView
 
 urlpatterns = [
     path('', index_view, name='index'),
-    path('admin/', admin_redirect),
+    path('admin/', admin_index, name="admin_index"),
     path('accounts/', include('allauth.urls')),
     path('accounts/login/', LoginView.as_view(template_name="account/login.html"), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
@@ -53,5 +53,5 @@ urlpatterns = [
     
     path('dashboard/', dashboard_view, name="dashboard_view"),
     
-    path('admin/domain/get_domains/<int:domain_id>/', get_domains)
+    # path('admin/domain/get_domains/<int:domain_id>/', get_domains)
 ]

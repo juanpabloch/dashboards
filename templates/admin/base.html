@@ -6,25 +6,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Admin Panel</title>
-    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/admin/style.css' %}">
 
     {% block link %}{% endblock link %}
 </head>
 <body>
-    <h1>admin Panel</h1>
-    <a href="{% url 'logout' %}">Logout</a>
-    <section>
-        <div>
-            <a class="btn btn-outline-secondary" href="{% url 'admin_user_view' %}">Users</a>
-            <a class="btn btn-outline-secondary" href="{% url 'admin_dashboard_view' %}">Dashboards</a>
-            <a class="btn btn-outline-secondary" href="{% url 'admin_domain_view' %}">Domains</a>
+    <div id="viewport">
+        <!-- Sidebar -->
+        <div id="sidebar">
+          <header>
+            <h2>Admin Panel</h2>
+          </header>
+          <ul class="nav">
+            <li><a href="{% url 'admin_dashboard_view' %}"><i class="fa fa-tachometer" aria-hidden="true"></i>
+                Dashboards</a></li>
+            <li><a href="{% url 'admin_user_view' %}"><i class="fa fa-users" aria-hidden="true"></i>
+                Users</a></li>
+            <li><a href="{% url 'admin_domain_view' %}"><i class="fa fa-globe" aria-hidden="true"></i>
+                Domains</a></li>
+            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i>
+                Logout</a></li>
+          </ul>
         </div>
-    </section>
-    {% block content %}{% endblock content %}
+        <!-- Content -->
+        <div id="content">
+          <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+            </div>
+          </nav>
+          <div class="container-fluid">
+            {% block content %}{% endblock content %}
+          </div>
+        </div>
+      </div>
     
     <!-- JavaScript Bundle with Popper -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

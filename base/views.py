@@ -34,7 +34,7 @@ def check_user(request, sociallogin, **kwargs):
 def index_view(request):
     admin = thank_auth.is_staff(request)
     if admin:
-        return redirect('admin_dashboard_view')
+        return redirect('admin_index')
     
     user = User.objects.filter(id=request.user.id)[0]
     user_dash = Dashboard.objects.filter(users__id=user.id).filter(active=1)
@@ -50,11 +50,12 @@ def index_view(request):
     return render(request, 'index.html', context)
 
 
-def admin_redirect(request):
+@login_required(login_url='accounts/login')
+def admin_index(request):
     admin = thank_auth.is_staff(request)
     if not admin:
         return redirect('login')
-    return redirect('admin_dashboard_view')
+    return render(request, 'admin/index.html')
 
 
 def admin_dashboard_view(request):
@@ -67,7 +68,7 @@ def admin_dashboard_view(request):
         "dashboards": dashboard,
         "new_dash_form": DashboardForm()
     }
-    return render(request, 'admin/index.html', context)
+    return render(request, 'admin/dashboards.html', context)
 
 
 def dashboard_create(request):
@@ -125,33 +126,20 @@ def dashboard_edit(request, dashboard_id):
     if not admin:
         return redirect('login')
     
-    dashboard = Dashboard.objects.filter(id=dashboard_id)
-    
     if request.method == "POST":
         form = DashboardForm(request.POST)
         if form.is_valid():
             dash = request.POST
             iframe = iframe_converter.converter(dash["url"])
-            dashboard.update(
+            dashboard = Dashboard.objects.filter(id=dashboard_id).update(
                 name = dash["name"],
                 url = dash["url"],
                 iframe = iframe
             )
             if dashboard:
-                return redirect('admin_dashboard_view')
+                print("OK")
+        return redirect('admin_dashboard_view')
             
-    dashboard_form = {
-        "name": dashboard[0].name,
-        "url": dashboard[0].url,
-        "iframe": dashboard[0].iframe
-    }
-    form = DashboardForm(dashboard_form)
-    context = {
-        'dashboard': dashboard[0],
-        'form': form
-    }
-    
-    return render(request, 'admin/dashboard_edit.html', context)
 
 # USER
 def admin_user_view(request):
@@ -299,10 +287,10 @@ def forbidden_view(request):
     return render(request, 'account/forbidden.html')
 
 
-def get_domains(request, domain_id):
-    domain = EmailsDomains.objects.filter(id=domain_id).first()
-    data = {
-        "name": domain.name,
-        "domain": domain.domain
-    }
-    return JsonResponse(data)
+# def get_domains(request, domain_id):
+#     domain = EmailsDomains.objects.filter(id=domain_id).first()
+#     data = {
+#         "name": domain.name,
+#         "domain": domain.domain
+#     }
+#     return JsonResponse(data)
